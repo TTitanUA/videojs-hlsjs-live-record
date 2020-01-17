@@ -1,0 +1,6 @@
+{
+  "app.css": "videojs-hlsjs-live-record.css",
+  "app.css.map": "videojs-hlsjs-live-record.css.map",
+  "app.js": "videojs-hlsjs-live-record.min.js",
+  "app.js.map": "videojs-hlsjs-live-record.min.js.map"
+}

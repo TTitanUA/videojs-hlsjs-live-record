@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "videojs"
+  ],
+  "rules": {
+    "no-console": ["warn", {
+      "allow": ["warn", "error"]
+    }],
+    "no-plusplus": ["error", {
+      "allowForLoopAfterthoughts": true
+    }]
+  }
+}

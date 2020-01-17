@@ -1,0 +1,105 @@
+{
+  "name": "videojs-hlsjs-live-record",
+  "version": "0.1.0",
+  "description": "Live stream record functionality for VideoJS with hls.js",
+  "author": {
+    "name": "Taras Prokofiev",
+    "url": "xttitax@gmail"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/TTitanUA/videojs-hlsjs-live-record#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TTitanUA/videojs-hlsjs-live-record.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TTitanUA/videojs-hlsjs-live-record/issues"
+  },
+  "keywords": [
+    "videojs",
+    "videojs-plugin",
+    "videojs-hlsjs"
+  ],
+  "files": [
+    "dist/",
+    "index.html",
+    "webpack/",
+    "src/"
+  ],
+  "scripts": {
+    "prestart": "rimraf dist",
+    "start": "webpack-dev-server --open --mode development",
+    "prebuild": "rimraf dist",
+    "build": "npm-run-all prebuild build:*",
+    "build:umdmin": "webpack --mode=production --output-library-target=umd",
+    "build:umd": "webpack --mode=development --output-library-target=umd",
+    "build:commonjs": "webpack --mode=development --output-library-target=commonjs2",
+    "dev:umd": "webpack --progress --colors --watch --mode=development --output-library-target=umd",
+    "dev:commonjs": "webpack --progress --colors --watch --mode=development --output-library-target=commonjs2",
+    "dev": "npm-run-all --parallel dev:*",
+    "check-eslint-config": "eslint --print-config .eslintrc | eslint-config-prettier-check",
+    "check-stylelint-config": "stylelint-config-prettier-check",
+    "lint-code": "eslint 'src/**/*.js'",
+    "lint-style": "stylelint 'src/**/*.{css,scss}'"
+  },
+  "dependencies": {
+    "global": "^4.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/plugin-transform-async-to-generator": "^7.5.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "autoprefixer": "^9.6.1",
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.0.4",
+    "css-loader": "^3.2.0",
+    "csso-webpack-plugin": "^1.0.0-beta.12",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-videojs": "^5.0.2",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "file-loader": "^4.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "normalize.css": "^8.0.1",
+    "npm-run-all": "~4.1.5",
+    "postcss-flexbugs-fixes": "^4.1.0",
+    "postcss-loader": "^3.0.0",
+    "prettier": "^1.18.2",
+    "rimraf": "^3.0.0",
+    "yargs": "~14.1.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "stylelint": "^11.0.0",
+    "stylelint-config-prettier": "^6.0.0",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-config-sass-guidelines": "^6.1.0",
+    "stylelint-prettier": "^1.1.1",
+    "stylelint-scss": "^3.11.1",
+    "video.js": "^7.6.0",
+    "videojs-contrib-hls.js": "^3.2.0",
+    "webpack": "^4.41.0",
+    "webpack-assets-manifest": "^3.1.1",
+    "webpack-bundle-analyzer": "^3.5.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1",
+    "webpack-merge": "^4.2.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

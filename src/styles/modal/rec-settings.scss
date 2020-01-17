@@ -1,0 +1,13 @@
+@import "../vertical-tabs";
+
+.vjs-hlsjs-lr-rec-settings.vjs-modal-dialog {
+  .vjs-modal-dialog-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .vjs-hlsjs-start-record {
+    padding: 5px 10px;
+  }
+}

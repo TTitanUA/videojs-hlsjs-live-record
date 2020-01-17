@@ -1,0 +1,40 @@
+.vjs-hlsjs-vertical-tabs {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+
+  //background-color: rgba(41, 41, 41, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.vjs-hlsjs-vertical-tabs-nav {
+  width: 140px;
+  flex: 140px 0 0;
+  flex-shrink: 0;
+}
+
+.vjs-hlsjs-vertical-tabs-nav-elem {
+  padding: 10px 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  &.active {
+    background-color: #333;
+  }
+
+  &:hover {
+    background-color: #333 - 10%;
+  }
+}
+
+.vjs-hlsjs-vertical-tabs-body {
+  min-height: 300px;
+  height: 300px;
+}
+
+.vjs-hlsjs-vertical-tabs-elem {
+  display: none;
+  padding: 10px;
+  &.active {
+    display: block;
+  }
+}

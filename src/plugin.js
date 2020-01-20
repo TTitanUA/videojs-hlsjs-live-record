@@ -24,18 +24,22 @@ class HlsJSLiveRecordPlugin extends Plugin {
   constructor(player, options) {
     super(player, options);
 
-    this.viewController = new ViewController(this);
+    this.options = videojs.mergeOptions(defaults, options);
     this.storageController = new StorageController(this);
+    this.viewController = new ViewController(this);
     this.realtimeRecordController = new RealtimeRecordController(this);
 
-    this.options = videojs.mergeOptions(defaults, options);
-
-    player.on('ready', () => {
+    player.on('playing', () => {
       this.init();
     });
   }
 
   init = () => {
+    if(this.state.init) {
+      return;
+    }
+
+    this.setState({init: true});
     if(this.checkRequirements()) {
       this.player.addClass('vjs-hls-live-record');
       this.player.on('pause', this.viewController.activateProgressMode);
@@ -97,7 +101,8 @@ HlsJSLiveRecordPlugin.VERSION = VERSION;
 
 HlsJSLiveRecordPlugin.defaultState = {
   recordAllowed: true,
-  recordInProcess: false
+  recordInProcess: false,
+  init: false
 };
 
 videojs.registerPlugin('hlsJSLiveRecord', HlsJSLiveRecordPlugin);

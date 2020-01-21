@@ -18,9 +18,6 @@ class RecSettingsModalHlsJs extends VideoJsModalDialogClass {
    * @param {Object} options
    */
   constructor(player, options) {
-    console.group("RecSettingsModalHlsJs.js:20 - constructor");
-    console.log(player);
-    console.groupEnd();
     super(player, options);
   }
 
@@ -43,8 +40,27 @@ class RecSettingsModalHlsJs extends VideoJsModalDialogClass {
    *         The `Player`s error message localized or an empty string.
    */
   content() {
-    this.tabsComponent = new TabsHlsJs(this.player_, {});
-    return this.tabsComponent.el_;
+    if(this.options().allowed) {
+      this.tabsComponent = new TabsHlsJs(this.player_, this.options());
+      return this.tabsComponent.el_;
+    } else {
+      return this.renderNotAllowedContent();
+    }
+  }
+
+  renderNotAllowedContent() {
+    if(this.renderedEl_) {
+      return this.renderedEl_;
+    }
+
+    const content = (this.options().notAllowedContent || (() => ('<h2>Recording not allowed</h2>')))();
+
+    this.renderedEl_ = Dom.createEl('div', {
+      className: '',
+      innerHTML: content,
+    });
+
+    return this.renderedEl_;
   }
 }
 

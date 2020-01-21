@@ -87,17 +87,9 @@ class ViewController {
   };
 
   showRecordSettings = () => {
-    this.recSettingsModalComponent = new RecSettingsModalHlsJs(this.plugin.player, {
-
-    });
+    this.recSettingsModalComponent = new RecSettingsModalHlsJs(this.plugin.player, this.plugin.options);
     this.plugin.player.addChild(this.recSettingsModalComponent);
     this.recSettingsModalComponent.open();
-
-
-    console.group("plugin.js:108 - showRecordSettings");
-    console.log(this);
-    console.groupEnd();
-    // this.activateRecordMode();
   };
 
   activateRecordMode = () => {
@@ -109,10 +101,15 @@ class ViewController {
   };
 
   showRecControl = () => {
+    const maxRecordSeconds = this.plugin.options.maxRecordMinutes * 60;
     this.plugin.player.addClass('vjs-hlsjs-record-started');
+    this.recStatusBarComponent.updateRecordLeftTime(maxRecordSeconds);
     this.recStatusBarComponent.updateRecordTime(0);
     let a = 1;
     this.recordUpdateInterval = setInterval(() => {
+      if(a >= maxRecordSeconds) {
+        this.plugin.stopRealtimeRecord();
+      }
       this.recStatusBarComponent.updateRecordTime(a++);
     }, 1000);
 

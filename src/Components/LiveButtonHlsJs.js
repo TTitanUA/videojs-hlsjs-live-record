@@ -18,10 +18,6 @@ export default class LiveButtonHlsJs extends VideoJsButtonClass {
    */
   constructor(player, options) {
     super(player, Object.assign(defaultOptions, options));
-
-    console.group("LiveButtonHlsJs.js:25 - constructor");
-    console.log(this);
-    console.groupEnd();
   }
 
   createEl(tag, props = {}, attributes = {}) {

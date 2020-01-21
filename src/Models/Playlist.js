@@ -22,6 +22,10 @@ export class PlaylistModel {
     this.height = playlistData.height || 384;
     this.fragments = playlistData.fragments || [];
     this.targetduration = playlistData.targetduration || 0;
+    this.mime = playlistData.mime || {};
+    this.createdAt = playlistData.createdAt || Date.now();
+    this.updatedAt = playlistData.updatedAt || null;
+    this.recFinished = playlistData.recFinished || false;
   }
 
   addFragment(duration, url) {
@@ -36,7 +40,14 @@ export class PlaylistModel {
         frag.saved = true;
       }
       return frag;
-    })
+    });
+
+    this.updatedAt = Date.now();
+  }
+
+  finished() {
+    this.updatedAt = Date.now();
+    this.recFinished = true;
   }
 
   toString() {

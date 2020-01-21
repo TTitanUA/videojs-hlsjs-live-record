@@ -19,9 +19,6 @@ class TabsHlsJs extends VideoJsComponentClass {
    * @param {Object} options
    */
   constructor(player, options) {
-    console.group("TabsHlsJs.js:20 - constructor");
-    console.log(player);
-    console.groupEnd();
     super(player, options);
   }
 
@@ -45,9 +42,6 @@ class TabsHlsJs extends VideoJsComponentClass {
     const navHolder = Dom.createEl('div', {
       className: 'vjs-hlsjs-vertical-tabs-nav'
     });
-    console.group("TabsHlsJs.js:66 - renderNav");
-    console.log(this);
-    console.groupEnd();
     navHolder.appendChild(
       Dom.createEl('div', {
         className: 'vjs-hlsjs-vertical-tabs-nav-elem active',
@@ -72,14 +66,14 @@ class TabsHlsJs extends VideoJsComponentClass {
       className: 'vjs-hlsjs-vertical-tabs-body'
     });
 
-    this.realtimeRecord = new RealTimeRecordTabHlsJs(this.player_, {});
+    this.realtimeRecord = new RealTimeRecordTabHlsJs(this.player_, this.options());
     const elem1 = Dom.createEl('div', {
       className: 'vjs-hlsjs-vertical-tabs-elem active'
     });
     elem1.appendChild(this.realtimeRecord.el_);
     bodyHolder.appendChild(elem1);
 
-    this.backgroundRecord = new BackgroundRecordTabHlsJs(this.player_, {});
+    this.backgroundRecord = new BackgroundRecordTabHlsJs(this.player_, this.options());
     const elem2 = Dom.createEl('div', {
       className: 'vjs-hlsjs-vertical-tabs-elem'
     });

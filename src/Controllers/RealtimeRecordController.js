@@ -4,6 +4,12 @@ import XhrLoader from "../utils/xhr-loader";
 
 const Hls = window.Hls;
 
+const faceMimePromise = () => {
+  return new Promise((resolve) => {
+    resolve({});
+  })
+};
+
 class RealtimeRecordController {
   constructor(plugin) {
     this.plugin = plugin;
@@ -17,8 +23,6 @@ class RealtimeRecordController {
 
   init() {
     const hlsjs = this.plugin.getHlsJs();
-    // this.manifestListener = hlsjs.on(Hls.Events.MANIFEST_LOADED, this.hlsManifestLoaded);
-    // this.levelListener = hlsjs.on(Hls.Events.LEVEL_LOADED, this.hlsLevelLoaded);
     this.fragmentListener = hlsjs.on(Hls.Events.FRAG_LOADED, this.hlsFragmentLoaded);
   }
 
@@ -29,20 +33,11 @@ class RealtimeRecordController {
 
   stopRecord() {
     this.recordStarted = false;
+    if(this.playlist) {
+      this.playlist.finished();
+      this.plugin.storageController.savePlaylist(this.playlist);
+    }
   }
-
-  // hlsManifestLoaded = (event, data) => {
-  //   console.group("RealtimeRecordController.js:25 - hlsManifestLoaded");
-  //   console.log(data);
-  //   console.groupEnd();
-  // };
-  //
-  //
-  // hlsLevelLoaded = (event, data) => {
-  //   console.group("RealtimeRecordController.js:25 - hlsLevelLoaded");
-  //   console.log(data);
-  //   console.groupEnd();
-  // };
 
   saveFragment(frag) {
     if(this.playlist === null) {
@@ -71,9 +66,6 @@ class RealtimeRecordController {
 
     const loaderCallbacks = {
       onSuccess: this.fragmentLoaded,
-      // onError: this.loaderror.bind(this),
-      // onTimeout: this.loadtimeout.bind(this),
-      // onProgress: this.loadprogress.bind(this)
     };
     loader.load(loaderContext, loaderConfig, loaderCallbacks);
   }
@@ -81,6 +73,8 @@ class RealtimeRecordController {
   initPlaylist(levelIndex) {
     const hlsjs = this.plugin.getHlsJs();
     const level = hlsjs.levels[levelIndex];
+    const mimePromise = (this.plugin.options.realtimeRecord.getRecordMime || faceMimePromise)();
+
     if(!level) {
       return;
     }
@@ -91,6 +85,11 @@ class RealtimeRecordController {
       height: level.height,
       targetduration: level.details.targetduration
     });
+
+    mimePromise.then((mime) => {
+      this.playlist.mime = mime;
+      this.plugin.storageController.savePlaylist(this.playlist);
+    })
   }
 
   fragmentLoaded = (response, stats, context, networkDetails = null) => {
@@ -100,9 +99,6 @@ class RealtimeRecordController {
     this.plugin.storageController.saveFragment(context.frag, response.data, stats).then(() => {
       this.playlist.fragmentSaved(context.frag);
       this.plugin.storageController.savePlaylist(this.playlist);
-      console.groupCollapsed("RealtimeRecordController.js:104 - ");
-      console.log(this.playlist.toString());
-      console.groupEnd();
     });
   };
 

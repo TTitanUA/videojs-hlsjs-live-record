@@ -12,18 +12,51 @@ import ViewController from "./Controllers/ViewController";
 import StorageController from "./Controllers/StorageController";
 import RealtimeRecordController from "./Controllers/RealtimeRecordController";
 
+
+/**
+ * A Default configuration
+ * @typedef {Object} DefaultConfig
+ * @property {string[]} listOfControlsHiddenOnRec - List of interface elements that should be hidden in recording mode
+ * @property {string} storageDbName - The name of the IndexedDB database used to save records
+ * @property {string} storagePlaylistsName - The name of the playlists storage
+ * @property {string} storageFragmentsName - The name of the fragments storage
+ * @property {number} maxRecordMinutes - Maximum record duration in minutes
+ * @property {boolean} allowed - Enable recording functionality
+ * @property {null | callback<string | HTMLElement>} notAllowedContent - This content will be displayed if recording not allowed
+ * @property {object} realtimeRecord - Realtime recording configuration
+ * @property {boolean} realtimeRecord.allowed - Enable realtime recording functionality
+ * @property {boolean} realtimeRecord.hideIfNotAllowed - Hide realtime recording tab if realtime recording not allowed
+ * @property {null | callback<string | HTMLElement>} realtimeRecord.modalHeaderContent - Header content of the realtime recording tab
+ * @property {null | callback<string | HTMLElement>} realtimeRecord.modalFooterContent - Footer content of the realtime recording tab
+ * @property {null | callback<string | HTMLElement>} realtimeRecord.notAllowedContent - This content will be displayed if realtime recording not allowed
+ * @property {null | callback<Promise<object>>} realtimeRecord.getRecordMime - Object returned by this function will be included in playlist and can be used later
+ */
+
+/**
+ *
+ * @type {DefaultConfig}
+ */
 const defaults = {
   listOfControlsHiddenOnRec: ['vjs-play-control', 'vjs-quality-selector'],
   storageDbName: 'vjs-hlsjs-lr',
   storagePlaylistsName: 'playlists',
   storageFragmentsName: 'fragments',
+  maxRecordMinutes: 60,
+  allowed: true,
+  notAllowedContent: null,
+  realtimeRecord: {
+    allowed: true,
+    modalHeaderContent: null,
+    modalFooterContent: null,
+    notAllowedContent: null,
+    getRecordMime: null,
+  }
 };
 
 class HlsJSLiveRecordPlugin extends Plugin {
 
   constructor(player, options) {
     super(player, options);
-
     this.options = videojs.mergeOptions(defaults, options);
     this.storageController = new StorageController(this);
     this.viewController = new ViewController(this);
@@ -69,18 +102,15 @@ class HlsJSLiveRecordPlugin extends Plugin {
   };
 
   startRealtimeRecord(levelId) {
+
     this.setState({
       recordInProcess: true
     });
 
     this.getHlsJs().currentLevel = levelId * 1;
     this.viewController.activateRecordMode();
-    this.realtimeRecordController.startRecord();
 
-    // console.group("plugin.js:203 - startRealtimeRecord");
-    // console.log(this);
-    // console.log(levelId);
-    // console.groupEnd();
+    this.realtimeRecordController.startRecord();
   }
 
   stopRealtimeRecord = () => {

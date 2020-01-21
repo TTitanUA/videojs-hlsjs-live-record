@@ -2,12 +2,7 @@ import videojs from 'video.js';
 import {faceUUID} from "../../utils/uuid";
 
 const VideoJsComponentClass = videojs.getComponent('Component');
-const VideoJsButtonClass = videojs.getComponent('MenuButton');
-const VideoJsMenuClass = videojs.getComponent('Menu');
 const Dom = videojs.dom;
-
-const defaultOptions = {};
-
 /**
  * Extend vjs button class for quality button.
  */
@@ -55,22 +50,36 @@ class RealTimeRecordTabHlsJs extends VideoJsComponentClass {
       },
     );
 
-    elem.appendChild(this.renderHead());
-    elem.appendChild(this.renderQualitySelector());
-    elem.appendChild(this.renderButton());
+    if(this.options().realtimeRecord.allowed) {
+      elem.appendChild(this.renderHead());
+      elem.appendChild(this.renderQualitySelector());
+      elem.appendChild(this.renderButton());
+      elem.appendChild(this.renderFooter());
+    } else {
+      return elem.appendChild(this.renderNotAllowedContent());
+    }
 
     return elem;
   }
 
   renderHead() {
+    const content = (this.options().realtimeRecord.modalHeaderContent || (() => (
+      "<p>Real-time recording allows you to record a fragment of the program you are watching. " +
+      "Recording will be done until the recording stops, the recording time limit is exceeded or the tab is closed." +
+      "To start recording, select your preferred quality and click <strong>\"start recording\"</strong>.</p>" +
+      "<p>Your current recording time limit is " + this.options().maxRecordMinutes + " min.</p>"
+    )))() ;
     return Dom.createEl('div', {
-      innerHTML: "<p>Real-time recording allows you to record a fragment of the program you are watching. " +
-        "Recording will be done until the recording stops, the recording time limit is exceeded or the tab is closed." +
-        "To start recording, select your preferred quality and click <strong>\"start recording\"</strong>.</p>" +
-        "<p>Your current recording time limit is 60 min.</p>"
+      innerHTML: content
     })
   }
 
+  renderFooter() {
+    const content = (this.options().realtimeRecord.modalFooterContent || (() => ('')))() ;
+    return Dom.createEl('div', {
+      innerHTML: content
+    })
+  }
 
   renderQualitySelector() {
     const elem = Dom.createEl(
@@ -131,10 +140,24 @@ class RealTimeRecordTabHlsJs extends VideoJsComponentClass {
     return holder;
   }
 
+  renderNotAllowedContent() {
+    if(this.renderedEl_) {
+      return this.renderedEl_;
+    }
+
+    const content = (this.options().realtimeRecord.notAllowedContent || (() => ('<h2>Recording not allowed</h2>')))();
+
+    this.renderedEl_ = Dom.createEl('div', {
+      className: '',
+      innerHTML: content,
+    });
+
+    return this.renderedEl_;
+  }
+
   handleStartRecording() {
     this.player().hlsJSLiveRecord().startRealtimeRecord(this.qualitySelect.value);
   }
-
 }
 
 export default RealTimeRecordTabHlsJs;

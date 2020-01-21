@@ -10,8 +10,5 @@ const Dom = videojs.dom;
 export default class ProgressControlHlsJs extends VideoJsProgressControlComponent {
   constructor(player, options) {
     super(player, options);
-    console.group("ProgressControlHlsJs.js:13 - constructor");
-    console.log(this);
-    console.groupEnd();
   }
 }

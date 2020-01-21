@@ -19,10 +19,6 @@ export default class CachedButtonHlsJs extends VideoJsButtonClass {
    */
   constructor(player, options) {
     super(player, Object.assign(defaultOptions, options));
-
-    console.group("CachedButtonHlsJs.js:23 - constructor");
-    console.log(this);
-    console.groupEnd();
   }
 
   createEl(tag, props = {}, attributes = {}) {

@@ -13,10 +13,13 @@ class StorageController {
     const openRequest = indexedDB.open(this.plugin.options.storageDbName, DB_VERSION);
     openRequest.onupgradeneeded = () => {
       this.db = openRequest.result;
-      this.db.createObjectStore(this.plugin.options.storagePlaylistsName, {keyPath: 'id'});
-
-      const fragmentsStorage = this.db.createObjectStore(this.plugin.options.storageFragmentsName, {keyPath: 'uuid'});
-      fragmentsStorage.createIndex('playlistId', 'playlistId', {unique: false});
+      if (!this.db.objectStoreNames.contains(this.options.storagePlaylistsName)) {
+        this.db.createObjectStore(this.options.storagePlaylistsName, {keyPath: 'id'});
+      }
+      if (!this.db.objectStoreNames.contains(this.options.storageFragmentsName)) {
+        const fragmentsStorage = this.db.createObjectStore(this.options.storageFragmentsName, {keyPath: 'uuid'});
+        fragmentsStorage.createIndex('playlistId', 'playlistId', {unique: false});
+      }
     };
 
     openRequest.onsuccess = () => {

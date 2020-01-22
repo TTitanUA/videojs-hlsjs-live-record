@@ -1,6 +1,6 @@
 {
   "name": "videojs-hlsjs-live-record",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Live stream record functionality for VideoJS with hls.js",
   "author": {
     "name": "Taras Prokofiev",
